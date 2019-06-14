@@ -3,47 +3,63 @@ include <phonering_include.scad>
 module ring_outer() {
     rotate_extrude() {
         translate([ringrad,0,0]) {
-            roundedSquare([ringthick, ringthick], 0.75);
+            roundedSquare([ringthick, ringthick], ringrnd);
         }
     }
 }
 
-module block() {
-    rotate(Y * 90) {
-        mcad_rounded_box([ringthick, ringthick, blocklength], 2, sidesonly = false, center = true);
+module blockblank() {
+    rotate (Y * 90) {
+        linear_extrude (height = blklen) {
+            roundedSquare ([ringthick, ringthick], ringrnd);
+        }
     }
 }
 
 module place_block() {
-    translate(Y * -ringrad) {
-        ring_block();
+    translate([-blklen / 2, -ringrad, 0]) {
+        blockblank();
     }
 }
 
-module bolthole() {
-    mcad_bolt_hole_with_nut (size = 2,
-                             length = (blocklength - 2 - 2.8),
-                             screw_extra_length = 1,
-                             head_extra_length = 1,
-                             nut_projection_length = 1.75);
+module screwhole() {
+    rotate(Z * 30) {
+        mcad_bolt_hole_with_nut (size = screw,
+                                 length = screwlen,
+                                 screw_extra_length = 2,
+                                 head_extra_length = 5,
+                                 nut_projection_length = 5);
+    }
 }
 
-module place_bolthole(){
-    translate([-(blocklength / 2), -ringrad + 0.25, 0]) {
-        rotate(Y * 90) {
-            rotate(Z * 30) {
-                bolthole();
-            }
+module place_screwhole() {
+    translate([blklen / 2, -ringrad, 0]) {
+        rotate(Y * -90) {
+            screwhole();
         }
     }
 }
 
 module pin_gap() {
-    cube([6, ringthick * 1.5, ringthick * 1.5], center = true);
+    cube([(pinrad * 2) + 0.5, ringthick + (ringrnd * 2), ringthick + (ringrnd * 2)], center = true);
 }
 
 module place_pin_gap() {
-    translate(Y * - ringrad) {
+    translate(Y * (-ringrad)) {
         pin_gap();
+    }
+}
+
+module ring() {
+    translate(Z * (ringthick / 2)) {
+        difference() {
+            union() {
+                ring_outer();
+                place_block();
+            }
+
+            place_screwhole();
+            place_pin_gap();
+        }
     }
 }

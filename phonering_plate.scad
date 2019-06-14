@@ -1,12 +1,34 @@
 include <phonering_include.scad>
 
-module trimplate(slice = 0.5) {
+module plateblank() {
+    translate(Z * pltmid) {
+        difference() {
+            translate([-pltsze[0]/2, -pltsze[1]/2, -pltmid]) {
+                mcad_rounded_box (pltsze,
+                                  pltrnd,
+                                  sidesonly = true,
+                                  center = false);
+            }
+            ccube (cubesz,
+                   center = X + Y);
+        }
+    }
+}
+
+module platecutout() {
+    translate(Z * pltbot) {
+        cylinder (r = pinbaserad + 0.2,
+                   h = pltmid - pltbot + 0.2);
+    }
+    translate(Z * -epsilon) {
+        cylinder (r = pinrad + 0.2,
+                   h = pltbot + (epsilon * 2));
+    }
+}
+
+module plate() {
     difference() {
-        translate(Z*1) {
-            import ("plate.stl"); // original height = 4
-        }
-        translate (Z * (4 - slice + epsilon)) {
-            ccube([30 + epsilon, 30 + epsilon, slice], center = X + Y);
-        }
+        plateblank();
+        platecutout();
     }
 }
