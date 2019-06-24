@@ -26,9 +26,9 @@ module screwhole() {
     rotate(Z * 30) {
         mcad_bolt_hole_with_nut (size = screw,
                                  length = screwlen,
-                                 screw_extra_length = 2,
-                                 head_extra_length = 5,
-                                 nut_projection_length = 5);
+                                 screw_extra_length = 1,
+                                 head_extra_length = 1,
+                                 nut_projection_length = 1);
     }
 }
 
@@ -55,7 +55,7 @@ module ring() {
         difference() {
             union() {
                 ring_outer();
-                place_block();
+				place_block();
             }
 
             place_screwhole();

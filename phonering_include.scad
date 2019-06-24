@@ -12,6 +12,8 @@ $fs = 0.1;
 
 //generic
 screw = 2; //metric screw size to use
+caphei = mcad_metric_bolt_cap_height (screw);
+nutthick = mcad_metric_nut_thickness (screw);
 
 //pin
 pinbaserad = 6;
@@ -35,4 +37,6 @@ ringrad = 13.5;
 ringrnd = 0.75;
 blklen = 21;
 blkrnd = blklen * 0.1;
-screwlen = blklen - 2 - 2.8;
+screwlen = blklen - caphei - nutthick;
+
+echo ("Screw length: ", screwlen);
