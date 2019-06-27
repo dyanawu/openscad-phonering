@@ -15,6 +15,7 @@ module pinhole() {
         mcad_bolt_hole (screw,
                         (pinrad * 2) + 2,
                         0.5,
+						0.1,
                         proj = -1);
     }
 }

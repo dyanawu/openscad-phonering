@@ -11,7 +11,7 @@ module ring_outer() {
 module blockblank() {
     rotate (Y * 90) {
         linear_extrude (height = blklen) {
-            roundedSquare ([ringthick + 0.5, ringthick + 1], ringrnd);
+            roundedSquare ([ringthick, ringthick + 1], ringrnd);
         }
     }
 }
@@ -26,9 +26,11 @@ module screwhole() {
     rotate(Z * 30) {
         mcad_bolt_hole_with_nut (size = screw,
                                  length = screwlen,
+								 bolt_tolerance = 0.1,
                                  screw_extra_length = 1,
                                  head_extra_length = 1,
-                                 nut_projection_length = 1);
+                                 nut_projection_length = 3,
+								 nut_tolerance = 0.1);
     }
 }
 
