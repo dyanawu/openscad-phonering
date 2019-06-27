@@ -11,7 +11,7 @@ module ring_outer() {
 module blockblank() {
     rotate (Y * 90) {
         linear_extrude (height = blklen) {
-            roundedSquare ([ringthick, ringthick], ringrnd);
+            roundedSquare ([ringthick + 0.5, ringthick + 1], ringrnd);
         }
     }
 }
